@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import LoginView from '@/views/LoginView.vue';
@@ -8,11 +8,10 @@ import NoteView from '@/views/NoteView.vue';
 import EditNoteView from '@/views/EditNoteView.vue';
 import store from '@/store'; // NEW
 
-
 const routes = [
   {
     path: '/',
-    name: "Home",
+    name: 'Home',
     component: HomeView,
   },
   {
@@ -51,7 +50,7 @@ const routes = [
     meta: { requiresAuth: true },
     props: true,
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -59,7 +58,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (store.getters.isAuthenticated) {
       next();
       return;

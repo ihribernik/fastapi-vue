@@ -1,20 +1,24 @@
 <template>
   <section>
     <h1>Edit note</h1>
-    <hr/><br/>
+    <hr />
+    <br />
 
     <form @submit.prevent="submit">
       <div class="mb-3">
         <label for="title" class="form-label">Title:</label>
-        <input type="text" name="title" v-model="form.title" class="form-control" />
+        <input
+          type="text"
+          name="title"
+          v-model="form.title"
+          class="form-control" />
       </div>
       <div class="mb-3">
         <label for="content" class="form-label">Content:</label>
         <textarea
           name="content"
           v-model="form.content"
-          class="form-control"
-        ></textarea>
+          class="form-control"></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -36,7 +40,7 @@ export default defineComponent({
       },
     };
   },
-  created: function() {
+  created: function () {
     this.GetNote();
   },
   computed: {
@@ -45,16 +49,16 @@ export default defineComponent({
   methods: {
     ...mapActions(['updateNote', 'viewNote']),
     async submit() {
-    try {
-      let note = {
-        id: this.id,
-        form: this.form,
-      };
-      await this.updateNote(note);
-      this.$router.push({name: 'Note', params:{id: this.note.id}});
-    } catch (error) {
-      console.log(error);
-    }
+      try {
+        let note = {
+          id: this.id,
+          form: this.form,
+        };
+        await this.updateNote(note);
+        this.$router.push({ name: 'Note', params: { id: this.note.id } });
+      } catch (error) {
+        console.log(error);
+      }
     },
     async GetNote() {
       try {
@@ -65,7 +69,7 @@ export default defineComponent({
         console.error(error);
         this.$router.push('/dashboard');
       }
-    }
+    },
   },
 });
 </script>

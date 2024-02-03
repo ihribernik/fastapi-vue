@@ -1,11 +1,20 @@
 <template>
   <section>
     <h1>Your Profile</h1>
-    <hr/><br/>
+    <hr />
+    <br />
     <div>
-      <p><strong>Full Name:</strong> <span>{{ user.full_name }}</span></p>
-      <p><strong>Username:</strong> <span>{{ user.username }}</span></p>
-      <p><button @click="deleteAccount()" class="btn btn-primary">Delete Account</button></p>
+      <p>
+        <strong>Full Name:</strong> <span>{{ user.full_name }}</span>
+      </p>
+      <p>
+        <strong>Username:</strong> <span>{{ user.username }}</span>
+      </p>
+      <p>
+        <button @click="deleteAccount()" class="btn btn-primary">
+          Delete Account
+        </button>
+      </p>
     </div>
   </section>
 </template>
@@ -16,11 +25,11 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default defineComponent({
   name: 'Profile',
-  created: function() {
+  created: function () {
     return this.$store.dispatch('viewMe');
   },
   computed: {
-    ...mapGetters({user: 'stateUser' }),
+    ...mapGetters({ user: 'stateUser' }),
   },
   methods: {
     ...mapActions(['deleteUser']),
@@ -32,7 +41,7 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
-    }
+    },
   },
 });
 </script>

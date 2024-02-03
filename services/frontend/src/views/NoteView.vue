@@ -5,12 +5,19 @@
     <p><strong>Author:</strong> {{ note.author.username }}</p>
 
     <div v-if="user.id === note.author.id">
-      <p><router-link :to="{name: 'EditNote', params:{id: note.id}}" class="btn btn-primary">Edit</router-link></p>
-      <p><button @click="removeNote()" class="btn btn-secondary">Delete</button></p>
+      <p>
+        <router-link
+          :to="{ name: 'EditNote', params: { id: note.id } }"
+          class="btn btn-primary"
+          >Edit</router-link
+        >
+      </p>
+      <p>
+        <button @click="removeNote()" class="btn btn-secondary">Delete</button>
+      </p>
     </div>
   </div>
 </template>
-
 
 <script>
 import { defineComponent } from 'vue';
@@ -28,7 +35,7 @@ export default defineComponent({
     }
   },
   computed: {
-    ...mapGetters({ note: 'stateNote', user: 'stateUser'}),
+    ...mapGetters({ note: 'stateNote', user: 'stateUser' }),
   },
   methods: {
     ...mapActions(['viewNote', 'deleteNote']),
@@ -39,7 +46,7 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
-    }
+    },
   },
 });
 </script>

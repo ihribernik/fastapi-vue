@@ -17,7 +17,8 @@ export default defineComponent({
   },
   methods: {
     getMessage() {
-      axios.get('/')
+      axios
+        .get('/')
         .then((res) => {
           this.msg = res.data;
         })
