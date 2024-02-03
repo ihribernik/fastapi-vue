@@ -1,61 +1,43 @@
 <template>
-  <header>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="/">FastAPI + Vue</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarCollapse"
-          aria-controls="navbarCollapse"
-          aria-expanded="false"
-          aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul v-if="isLoggedIn" class="navbar-nav me-auto mb-2 mb-md-0">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/">Home</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/dashboard"
-                >Dashboard</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/profile"
-                >My Profile</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" @click="logout">Log Out</a>
-            </li>
-          </ul>
-          <ul v-else class="navbar-nav me-auto mb-2 mb-md-0">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/">Home</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/register"
-                >Register</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/login">Log In</router-link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
+  <v-app :full-height="false" class="app-bar-container">
+    <v-app-bar :elevation="2">
+      <!-- eslint-disable-next-line vue/valid-v-on -->
+      <v-app-bar-nav-icon @click="drawer = !drawer" id="hamburger-icon">
+      </v-app-bar-nav-icon>
+      <v-app-bar-title>Pluton</v-app-bar-title>
+    </v-app-bar>
+    <v-navigation-drawer v-model="drawer" app>
+      <v-list>
+        <v-list-item
+          v-for="item in menuItems"
+          :key="item.title"
+          @click="notdefinedyet">
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+  </v-app>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'NavBar',
+  setup() {
+    const drawer = ref(false);
+    const menuItems = [
+      { title: 'Listado de resultados' },
+      { title: 'Carga de resultados' },
+      { title: 'My Profile' },
+      { title: 'Log-out' },
+    ];
+
+    return {
+      drawer,
+      menuItems,
+    };
+  },
   computed: {
     isLoggedIn: function () {
       return this.$store.getters.isAuthenticated;
