@@ -7,7 +7,7 @@
     <div v-if="user.id === note.author.id">
       <p>
         <router-link
-          :to="{ name: 'EditNote', params: { id: note.id } }"
+          :to="{ name: 'ResultEdit', params: { id: note.id } }"
           class="btn btn-primary"
           >Edit</router-link
         >
@@ -24,14 +24,15 @@ import { defineComponent } from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default defineComponent({
-  name: 'Note',
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Result',
   props: ['id'],
   async created() {
     try {
       await this.viewNote(this.id);
     } catch (error) {
       console.error(error);
-      this.$router.push('/dashboard');
+      this.$router.push('/');
     }
   },
   computed: {
@@ -42,7 +43,7 @@ export default defineComponent({
     async removeNote() {
       try {
         await this.deleteNote(this.id);
-        this.$router.push('/dashboard');
+        this.$router.push('/');
       } catch (error) {
         console.error(error);
       }

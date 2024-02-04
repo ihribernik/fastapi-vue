@@ -17,13 +17,17 @@ axios.defaults.baseURL = 'http://localhost:5000/'; // the FastAPI backend
 axios.interceptors.response.use(undefined, (error) => {
   if (error) {
     const originalRequest = error.config;
+    const {
+      statusText,
+      data: { detail },
+    } = error.response;
+    const serverMessage = detail || statusText;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       store.dispatch('logOut');
-      router.push('/login');
-      return { success: false, data: error.response.statusText };
+      return { success: false, data: serverMessage };
     }
-    return { success: false, data: error.response.statusText };
+    return { success: false, data: serverMessage };
   }
 });
 

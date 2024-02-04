@@ -1,18 +1,20 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '@/views/HomeView.vue';
-import RegisterView from '@/views/RegisterView.vue';
-import LoginView from '@/views/LoginView.vue';
-import DashboardView from '@/views/DashboardView.vue';
-import ProfileView from '@/views/ProfileView.vue';
-import NoteView from '@/views/NoteView.vue';
-import EditNoteView from '@/views/EditNoteView.vue';
 import store from '@/store'; // NEW
+import Home from '@/views/Home.vue';
+import LoginView from '@/views/LoginView.vue';
+import PageNotFoundViewVue from '@/views/PageNotFoundView.vue';
+import ProfileView from '@/views/ProfileView.vue';
+import RegisterView from '@/views/RegisterView.vue';
+import ResultAddViewVue from '@/views/ResultAddView.vue';
+import ResultEditViewVue from '@/views/ResultEditView.vue';
+import ResultViewVue from '@/views/ResultView.vue';
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: HomeView,
+    component: Home,
+    meta: { requiresAuth: true },
   },
   {
     path: '/register',
@@ -31,24 +33,29 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: DashboardView,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: '/note/:id',
-    name: 'Note',
-    component: NoteView,
+    path: '/result/:id',
+    name: 'Result',
+    component: ResultViewVue,
     meta: { requiresAuth: true },
     props: true,
   },
   {
-    path: '/editnote/:id',
-    name: 'EditNote',
-    component: EditNoteView,
+    path: '/result/:id/edit',
+    name: 'ResultEdit',
+    component: ResultEditViewVue,
     meta: { requiresAuth: true },
     props: true,
+  },
+  {
+    path: '/result/add',
+    name: 'ResultAdd',
+    component: ResultAddViewVue,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: PageNotFoundViewVue,
   },
 ];
 

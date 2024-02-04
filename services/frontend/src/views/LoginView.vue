@@ -1,5 +1,11 @@
 <template>
   <section>
+    <SnackBar
+      :show="snackbarShow"
+      :color="snackbarColor"
+      :message="snackbarMessage"
+      v-on:update="snackbarShow = $event" />
+
     <v-card class="elevation-12 w-auto h-auto">
       <v-toolbar dark color="primary">
         <v-toolbar-title>Login</v-toolbar-title>
@@ -7,6 +13,7 @@
       <v-form @submit.prevent="submit" ref="form">
         <v-card-text>
           <v-text-field
+            id="username"
             prepend-icon="person"
             name="username"
             label="username"
@@ -35,6 +42,7 @@
 </template>
 
 <script setup>
+import SnackBar from '@/components/SnackBar.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { VForm } from 'vuetify/lib/components/index.mjs';
@@ -42,8 +50,17 @@ import { useStore } from 'vuex';
 
 const loading = ref(false);
 const form = ref(null);
+
+const snackbarMessage = ref('');
+const snackbarShow = ref(false);
+const snackbarColor = ref('success');
+
 const store = useStore();
 const router = useRouter();
+
+const showSnackbar = () => {
+  snackbarShow.value = true;
+};
 
 const submit = async () => {
   try {
@@ -54,16 +71,17 @@ const submit = async () => {
       const User = new FormData();
       User.append('username', form.value.username.value);
       User.append('password', form.value.password.value);
-      const { success, data } = await store.dispatch('logIn', User);
+      const response = await store.dispatch('logIn', User);
       loading.value = false;
-      console.log({ success, data });
-      if (!success) {
-        throw data;
+      if (response.success !== true) {
+        throw response.data;
       }
-      router.push('/dashboard');
+      router.push('/');
     }
   } catch (error) {
-    console.error({ error });
+    snackbarMessage.value = error || 'Unknown error';
+    snackbarColor.value = 'error';
+    showSnackbar();
   }
 };
 </script>

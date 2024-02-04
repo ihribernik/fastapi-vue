@@ -7,12 +7,36 @@
       </v-icon>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-toolbar-title v-if="isLoggedIn">
-      Hola: {{ stateUser.full_name }}
-    </v-toolbar-title>
-    <v-btn :to="'/login'" v-if="!isLoggedIn">Login</v-btn>
-    <v-btn :to="'/register'" v-if="!isLoggedIn"> Registre </v-btn>
-    <v-btn @click="logout" variant="elevated" v-if="isLoggedIn">Logout</v-btn>
+    <v-btn
+      :to="'/login'"
+      variant="elevated"
+      class="mx-2"
+      color="primary"
+      v-if="!isLoggedIn"
+      >Login</v-btn
+    >
+    <v-btn
+      :to="'/register'"
+      variant="elevated"
+      color="secondary"
+      v-if="!isLoggedIn">
+      Register
+    </v-btn>
+    <v-btn
+      :to="'/profile'"
+      variant="elevated"
+      class="mx-2"
+      color="primary"
+      v-if="isLoggedIn">
+      Profile
+    </v-btn>
+    <v-btn
+      @click="logout"
+      variant="elevated"
+      color="secondary"
+      v-if="isLoggedIn">
+      Logout
+    </v-btn>
   </v-app-bar>
 
   <v-navigation-drawer app v-model="drawer" permanent>
@@ -27,7 +51,8 @@
       <v-list-item
         v-for="(item, index) in menuItems"
         :key="index"
-        :to="item.route">
+        :to="item.route"
+        :active="isLoggedIn">
         <v-list-item-icon>
           <v-icon>
             {{ item.icon }}
@@ -56,14 +81,11 @@ const router = useRouter();
 const drawer = ref(true);
 
 const menuItems = [
-  { title: 'Listado de resultados', route: '/dashboard', logged: true },
-  { title: 'Carga de resultados', route: '/dashboard', logged: true },
-  { title: 'My Profile', route: '/profile', logged: true },
+  { title: 'Listado de resultados', route: '/', logged: true },
+  { title: 'Carga de resultados', route: '/result/add', logged: true },
 ];
 
 const isLoggedIn = computed(() => store.getters.isAuthenticated);
-
-const stateUser = computed(() => store.getters.stateUser);
 
 const logout = async () => {
   await store.dispatch('logOut');

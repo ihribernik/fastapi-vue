@@ -30,7 +30,7 @@ import { defineComponent } from 'vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default defineComponent({
-  name: 'EditNote',
+  name: 'ResultEdit',
   props: ['id'],
   data() {
     return {
@@ -55,7 +55,7 @@ export default defineComponent({
           form: this.form,
         };
         await this.updateNote(note);
-        this.$router.push({ name: 'Note', params: { id: this.note.id } });
+        this.$router.push({ name: 'Result', params: { id: this.note.id } });
       } catch (error) {
         console.log(error);
       }
@@ -67,7 +67,7 @@ export default defineComponent({
         this.form.content = this.note.content;
       } catch (error) {
         console.error(error);
-        this.$router.push('/dashboard');
+        this.$router.push('/');
       }
     },
   },

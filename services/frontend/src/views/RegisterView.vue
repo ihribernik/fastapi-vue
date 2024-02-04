@@ -1,18 +1,26 @@
 <template>
   <section>
+    <SnackBar
+      :show="snackbarShow"
+      :color="snackbarColor"
+      :message="snackbarMessage"
+      v-on:update="snackbarShow = $event" />
     <v-card class="elevation-12 w-auto h-auto">
       <v-toolbar dark color="primary">
         <v-toolbar-title>Register</v-toolbar-title>
       </v-toolbar>
-      <v-form @submit.prevent="submit" ref="form">
+      <v-form @submit.prevent="submit">
         <v-card-text>
           <v-text-field
+            id="username"
+            v-model="form.username"
             prepend-icon="person"
             name="username"
             label="username"
             type="text"></v-text-field>
           <v-text-field
             id="full_name"
+            v-model="form.full_name"
             prepend-icon="person"
             name="full_name"
             label="Full Name"
@@ -20,6 +28,7 @@
           <v-text-field
             id="password"
             prepend-icon="lock"
+            v-model="form.password"
             name="password"
             label="Password"
             type="password"></v-text-field>
@@ -41,14 +50,15 @@
 </template>
 
 <script setup>
+import SnackBar from '@/components/SnackBar.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-// eslint-disable-next-line
-const name = 'YourComponentName';
-
 const loading = ref(false);
+const snackbarMessage = ref('');
+const snackbarShow = ref(false);
+const snackbarColor = ref('success');
 
 const router = useRouter();
 const store = useStore();
@@ -59,13 +69,26 @@ const form = ref({
   password: '',
 });
 
+const showSnackbar = () => {
+  snackbarShow.value = true;
+};
+
 const submit = async () => {
   try {
-    await store.dispatch('register', form.value);
-    router.push('/dashboard');
+    loading.value = true;
+    const { success, data } = await store.dispatch('register', {
+      ...form.value,
+    });
+    loading.value = false;
+    if (success === false) {
+      throw data;
+    }
+
+    router.push('/');
   } catch (error) {
-    console.log({ error });
-    throw 'Username already exists. Please try again.';
+    snackbarMessage.value = error || 'Unknown error';
+    snackbarColor.value = 'error';
+    showSnackbar();
   }
 };
 </script>

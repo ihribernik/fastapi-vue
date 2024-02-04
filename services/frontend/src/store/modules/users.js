@@ -11,11 +11,22 @@ const getters = {
 
 const actions = {
   async register({ dispatch }, form) {
-    await axios.post('register', form);
-    let UserForm = new FormData();
-    UserForm.append('username', form.username);
-    UserForm.append('password', form.password);
-    await dispatch('logIn', UserForm);
+    try {
+      const response = await axios.post('register', form);
+      const data = response.data;
+
+      if (response.status === 200) {
+        let UserForm = new FormData();
+        UserForm.append('username', form.username);
+        UserForm.append('password', form.password);
+        await dispatch('logIn', UserForm);
+
+        return { success: true, data };
+      }
+      throw response;
+    } catch (error) {
+      return error;
+    }
   },
   async logIn({ dispatch }, user) {
     try {
@@ -25,9 +36,9 @@ const actions = {
         await dispatch('viewMe');
         return { success: true, data };
       }
-      return { success: false, data: response };
+      throw response;
     } catch (error) {
-      return { success: false, data: error };
+      return error;
     }
   },
   async viewMe({ commit }) {
