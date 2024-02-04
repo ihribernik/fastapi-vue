@@ -32,7 +32,7 @@
       <hr />
       <br />
 
-      <div v-if="notes.length">
+      <div v-if="notes">
         <div v-for="note in notes" :key="note.id" class="notes">
           <div class="card" style="width: 18rem">
             <div class="card-body">
@@ -58,31 +58,27 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-import { mapGetters, mapActions } from 'vuex';
+<script setup>
+import { computed, onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
 
-export default defineComponent({
-  name: 'Dashboard',
-  data() {
-    return {
-      form: {
-        title: '',
-        content: '',
-      },
-    };
-  },
-  created: function () {
-    return this.$store.dispatch('getNotes');
-  },
-  computed: {
-    ...mapGetters({ notes: 'stateNotes' }),
-  },
-  methods: {
-    ...mapActions(['createNote']),
-    async submit() {
-      await this.createNote(this.form);
-    },
-  },
+const form = ref({
+  title: '',
+  content: '',
+});
+
+const store = useStore();
+
+// eslint-disable-next-line
+const createNote = (note) => store.dispatch('createNote', note);
+
+const notes = computed(() => store.getters.stateNotes);
+
+const submit = async () => {
+  await createNote(form.value);
+};
+
+onMounted(() => {
+  store.dispatch('getNotes');
 });
 </script>
