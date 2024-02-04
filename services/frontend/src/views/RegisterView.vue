@@ -1,60 +1,71 @@
 <template>
   <section>
-    <form @submit.prevent="submit">
-      <div class="mb-3">
-        <label for="username" class="form-label">Username:</label>
-        <input
-          type="text"
-          name="username"
-          v-model="user.username"
-          class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label for="full_name" class="form-label">Full Name:</label>
-        <input
-          type="text"
-          name="full_name"
-          v-model="user.full_name"
-          class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password:</label>
-        <input
-          type="password"
-          name="password"
-          v-model="user.password"
-          class="form-control" />
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <v-card class="elevation-12 w-auto h-auto">
+      <v-toolbar dark color="primary">
+        <v-toolbar-title>Register</v-toolbar-title>
+      </v-toolbar>
+      <v-form @submit.prevent="submit" ref="form">
+        <v-card-text>
+          <v-text-field
+            prepend-icon="person"
+            name="username"
+            label="username"
+            type="text"></v-text-field>
+          <v-text-field
+            id="full_name"
+            prepend-icon="person"
+            name="full_name"
+            label="Full Name"
+            type="text"></v-text-field>
+          <v-text-field
+            id="password"
+            prepend-icon="lock"
+            name="password"
+            label="Password"
+            type="password"></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            :loading="loading"
+            type="submit"
+            block
+            color="primary"
+            variant="elevated">
+            Register
+          </v-btn>
+        </v-card-actions>
+      </v-form>
+    </v-card>
   </section>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-import { mapActions } from 'vuex';
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
-export default defineComponent({
-  name: 'Register',
-  data() {
-    return {
-      user: {
-        username: '',
-        full_name: '',
-        password: '',
-      },
-    };
-  },
-  methods: {
-    ...mapActions(['register']),
-    async submit() {
-      try {
-        await this.register(this.user);
-        this.$router.push('/dashboard');
-      } catch (error) {
-        throw 'Username already exists. Please try again.';
-      }
-    },
-  },
+// eslint-disable-next-line
+const name = 'YourComponentName';
+
+const loading = ref(false);
+
+const router = useRouter();
+const store = useStore();
+
+const form = ref({
+  username: '',
+  full_name: '',
+  password: '',
 });
+
+const submit = async () => {
+  try {
+    await store.dispatch('register', form.value);
+    router.push('/dashboard');
+  } catch (error) {
+    console.log({ error });
+    throw 'Username already exists. Please try again.';
+  }
+};
 </script>
