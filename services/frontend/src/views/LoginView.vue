@@ -56,6 +56,7 @@ const submit = async () => {
       User.append('password', form.value.password.value);
       const { success, data } = await store.dispatch('logIn', User);
       loading.value = false;
+      console.log({ success, data });
       if (!success) {
         throw data;
       }

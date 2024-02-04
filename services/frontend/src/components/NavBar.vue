@@ -7,6 +7,9 @@
       </v-icon>
     </v-toolbar-title>
     <v-spacer></v-spacer>
+    <v-toolbar-title v-if="isLoggedIn">
+      Hola: {{ stateUser.full_name }}
+    </v-toolbar-title>
     <v-btn :to="'/login'" v-if="!isLoggedIn">Login</v-btn>
     <v-btn :to="'/register'" v-if="!isLoggedIn"> Registre </v-btn>
     <v-btn @click="logout" variant="elevated" v-if="isLoggedIn">Logout</v-btn>
@@ -59,6 +62,8 @@ const menuItems = [
 ];
 
 const isLoggedIn = computed(() => store.getters.isAuthenticated);
+
+const stateUser = computed(() => store.getters.stateUser);
 
 const logout = async () => {
   await store.dispatch('logOut');

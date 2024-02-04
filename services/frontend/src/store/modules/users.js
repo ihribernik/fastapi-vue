@@ -19,13 +19,11 @@ const actions = {
   },
   async logIn({ dispatch }, user) {
     try {
-      const response = await axios
-        .post('login', user)
-        .then((response) => response.data)
-        .catch((error) => error.toJSON());
-      if (response && response.status === 200) {
+      const response = await axios.post('login', user);
+      const data = response.data;
+      if (response.status === 200) {
         await dispatch('viewMe');
-        return { success: true, data: response };
+        return { success: true, data };
       }
       return { success: false, data: response };
     } catch (error) {
