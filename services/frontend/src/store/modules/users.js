@@ -18,8 +18,19 @@ const actions = {
     await dispatch('logIn', UserForm);
   },
   async logIn({ dispatch }, user) {
-    await axios.post('login', user);
-    await dispatch('viewMe');
+    try {
+      const response = await axios
+        .post('login', user)
+        .then((response) => response.data)
+        .catch((error) => error.toJSON());
+      if (response && response.status === 200) {
+        await dispatch('viewMe');
+        return { success: true, data: response };
+      }
+      return { success: false, data: response };
+    } catch (error) {
+      return { success: false, data: error };
+    }
   },
   async viewMe({ commit }) {
     let { data } = await axios.get('users/whoami');
