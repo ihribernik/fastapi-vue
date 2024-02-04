@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h1>Edit note</h1>
+    <h1>Edit Result</h1>
     <hr />
     <br />
 
@@ -41,30 +41,30 @@ export default defineComponent({
     };
   },
   created: function () {
-    this.GetNote();
+    this.GetResult();
   },
   computed: {
-    ...mapGetters({ note: 'stateNote' }),
+    ...mapGetters({ Result: 'stateResult' }),
   },
   methods: {
-    ...mapActions(['updateNote', 'viewNote']),
+    ...mapActions(['updateResult', 'viewResult']),
     async submit() {
       try {
-        let note = {
+        let Result = {
           id: this.id,
           form: this.form,
         };
-        await this.updateNote(note);
-        this.$router.push({ name: 'Result', params: { id: this.note.id } });
+        await this.updateResult(Result);
+        this.$router.push({ name: 'Result', params: { id: this.Result.id } });
       } catch (error) {
         console.log(error);
       }
     },
-    async GetNote() {
+    async GetResult() {
       try {
-        await this.viewNote(this.id);
-        this.form.title = this.note.title;
-        this.form.content = this.note.content;
+        await this.viewResult(this.id);
+        this.form.title = this.Result.title;
+        this.form.content = this.Result.content;
       } catch (error) {
         console.error(error);
         this.$router.push('/');

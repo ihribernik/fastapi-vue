@@ -14,20 +14,20 @@
           <v-text-field
             id="username"
             v-model="form.username"
-            prepend-icon="person"
+            prepend-icon="mdi-account"
             name="username"
             label="username"
             type="text"></v-text-field>
           <v-text-field
             id="full_name"
             v-model="form.full_name"
-            prepend-icon="person"
+            prepend-icon="mdi-account-details"
             name="full_name"
             label="Full Name"
             type="text"></v-text-field>
           <v-text-field
             id="password"
-            prepend-icon="lock"
+            prepend-icon="mdi-lock"
             v-model="form.password"
             name="password"
             label="Password"

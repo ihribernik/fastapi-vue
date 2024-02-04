@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <h1>Notes</h1>
+      <h1>Listado de resultados</h1>
 
       <div v-if="medicalResults">
         <v-container>
@@ -13,7 +13,7 @@
               <v-card class="elevation-12 w-auto h-auto">
                 <v-card-title>Notes</v-card-title>
                 <v-card-text>
-                  <p><strong>Note Title:</strong> {{ result.title }}</p>
+                  <p><strong>Note Title:</strong> {{ result }}</p>
                   <p><strong>Author:</strong> {{ result.author.username }}</p>
                 </v-card-text>
                 <v-card-actions>
@@ -40,9 +40,9 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 
-const medicalResults = computed(() => store.getters.stateNotes);
+const medicalResults = computed(() => store.getters.stateResults);
 
 onBeforeMount(() => {
-  store.dispatch('getNotes');
+  store.dispatch('getResults');
 });
 </script>

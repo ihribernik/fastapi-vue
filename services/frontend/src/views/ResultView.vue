@@ -1,19 +1,21 @@
 <template>
-  <div v-if="note">
-    <p><strong>Title:</strong> {{ note.title }}</p>
-    <p><strong>Content:</strong> {{ note.content }}</p>
-    <p><strong>Author:</strong> {{ note.author.username }}</p>
+  <div v-if="result">
+    <p><strong>Title:</strong> {{ result.title }}</p>
+    <p><strong>Content:</strong> {{ result.content }}</p>
+    <p><strong>Author:</strong> {{ result.author.username }}</p>
 
-    <div v-if="user.id === note.author.id">
+    <div v-if="user.id === result.doctor.id">
       <p>
         <router-link
-          :to="{ name: 'ResultEdit', params: { id: note.id } }"
+          :to="{ name: 'ResultEdit', params: { id: result.id } }"
           class="btn btn-primary"
           >Edit</router-link
         >
       </p>
       <p>
-        <button @click="removeNote()" class="btn btn-secondary">Delete</button>
+        <button @click="removeResult()" class="btn btn-secondary">
+          Delete
+        </button>
       </p>
     </div>
   </div>
@@ -29,20 +31,20 @@ export default defineComponent({
   props: ['id'],
   async created() {
     try {
-      await this.viewNote(this.id);
+      await this.viewResult(this.id);
     } catch (error) {
       console.error(error);
       this.$router.push('/');
     }
   },
   computed: {
-    ...mapGetters({ note: 'stateNote', user: 'stateUser' }),
+    ...mapGetters({ result: 'stateResult', user: 'stateUser' }),
   },
   methods: {
-    ...mapActions(['viewNote', 'deleteNote']),
-    async removeNote() {
+    ...mapActions(['viewResult', 'deleteResult']),
+    async removeResult() {
       try {
-        await this.deleteNote(this.id);
+        await this.deleteResult(this.id);
         this.$router.push('/');
       } catch (error) {
         console.error(error);

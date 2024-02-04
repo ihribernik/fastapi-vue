@@ -14,13 +14,13 @@
         <v-card-text>
           <v-text-field
             id="username"
-            prepend-icon="person"
+            prepend-icon="mdi-account"
             name="username"
             label="username"
             type="text"></v-text-field>
           <v-text-field
             id="password"
-            prepend-icon="lock"
+            prepend-icon="mdi-lock"
             name="password"
             label="Password"
             type="password"></v-text-field>
