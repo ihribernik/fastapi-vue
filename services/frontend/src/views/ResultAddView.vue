@@ -74,6 +74,9 @@ const submit = async () => {
       throw data;
     }
     loading.value = false;
+    snackbarMessage.value = 'Result created correctly';
+    snackbarColor.value = 'success';
+    showSnackbar();
   } catch (error) {
     snackbarMessage.value = error || 'Unknown error';
     snackbarColor.value = 'error';

@@ -8,6 +8,7 @@ import store from './store';
 import { vuetify } from '@/vuetify';
 import '@mdi/font/css/materialdesignicons.css'; // Ensure you are using css-loader
 import 'vuetify/styles';
+import VueApexCharts from 'vue3-apexcharts';
 
 const app = createApp(App);
 
@@ -31,6 +32,7 @@ axios.interceptors.response.use(undefined, (error) => {
   }
 });
 
+app.use(VueApexCharts);
 app.use(vuetify);
 app.use(router);
 app.use(store);

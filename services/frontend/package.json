@@ -9,11 +9,13 @@
     "lint-fix": "vue-cli-service lint --fix"
   },
   "dependencies": {
+    "apexcharts": "^3.45.2",
     "axios": "^1.2.1",
     "bootstrap": "^5.2.3",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
+    "vue3-apexcharts": "^1.4.4",
     "vuetify": "^3.5.2",
     "vuex": "^4.1.0"
   },

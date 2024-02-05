@@ -13,7 +13,6 @@ const getters = {
 const actions = {
   async createResult({ dispatch }, result) {
     try {
-      console.log({ result });
       const response = await axios.post('results', result);
       const data = response.data;
       if (response.status === 200) {
@@ -27,11 +26,11 @@ const actions = {
   },
   async getResults({ commit }) {
     let { data } = await axios.get('results');
-    commit('setResults', data);
+    await commit('setResults', data);
   },
   async viewResult({ commit }, id) {
     let { data } = await axios.get(`result/${id}`);
-    commit('setResult', data);
+    await commit('setResult', data);
   },
   // eslint-disable-next-line no-empty-pattern
   async updateResult({}, result) {

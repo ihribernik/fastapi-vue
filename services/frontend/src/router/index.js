@@ -5,8 +5,6 @@ import PageNotFoundViewVue from '@/views/PageNotFoundView.vue';
 import ProfileView from '@/views/ProfileView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import ResultAddViewVue from '@/views/ResultAddView.vue';
-import ResultEditViewVue from '@/views/ResultEditView.vue';
-import ResultViewVue from '@/views/ResultView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
@@ -31,20 +29,6 @@ const routes = [
     name: 'Profile',
     component: ProfileView,
     meta: { requiresAuth: true },
-  },
-  {
-    path: '/result/:id',
-    name: 'Result',
-    component: ResultViewVue,
-    meta: { requiresAuth: true },
-    props: true,
-  },
-  {
-    path: '/result/:id/edit',
-    name: 'ResultEdit',
-    component: ResultEditViewVue,
-    meta: { requiresAuth: true },
-    props: true,
   },
   {
     path: '/result/add',
