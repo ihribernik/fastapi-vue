@@ -29,8 +29,14 @@ class OAuth2PasswordBearerCookie(OAuth2):
     ):
         if not scopes:
             scopes = {}
-        flows = OAuthFlowsModel(password={"tokenUrl": token_url, "scopes": scopes})
-        super().__init__(flows=flows, scheme_name=scheme_name, auto_error=auto_error)
+        flows = OAuthFlowsModel(
+            password={"tokenUrl": token_url, "scopes": scopes},
+        )
+        super().__init__(
+            flows=flows,
+            scheme_name=scheme_name,
+            auto_error=auto_error,
+        )
 
     async def __call__(self, request: Request) -> Optional[str]:
         authorization: str = request.cookies.get("Authorization")
@@ -86,7 +92,7 @@ async def get_current_user(token: str = Depends(security)):
         user = await UserOutSchema.from_queryset_single(
             Users.get(username=token_data.username)
         )
-    except DoesNotExist:
+    except DoesNotExist as exc:
         raise credentials_exception
 
     return user

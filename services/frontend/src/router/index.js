@@ -1,19 +1,18 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue';
-import RegisterView from '@/views/RegisterView.vue';
-import LoginView from '@/views/LoginView.vue';
-import DashboardView from '@/views/DashboardView.vue';
-import ProfileView from '@/views/ProfileView.vue';
-import NoteView from '@/views/NoteView.vue';
-import EditNoteView from '@/views/EditNoteView.vue';
 import store from '@/store'; // NEW
-
+import Home from '@/views/Home.vue';
+import LoginView from '@/views/LoginView.vue';
+import PageNotFoundViewVue from '@/views/PageNotFoundView.vue';
+import ProfileView from '@/views/ProfileView.vue';
+import RegisterView from '@/views/RegisterView.vue';
+import ResultAddViewVue from '@/views/ResultAddView.vue';
+import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
     path: '/',
-    name: "Home",
-    component: HomeView,
+    name: 'Home',
+    component: Home,
+    meta: { requiresAuth: true },
   },
   {
     path: '/register',
@@ -26,32 +25,23 @@ const routes = [
     component: LoginView,
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: DashboardView,
-    meta: { requiresAuth: true },
-  },
-  {
     path: '/profile',
     name: 'Profile',
     component: ProfileView,
     meta: { requiresAuth: true },
   },
   {
-    path: '/note/:id',
-    name: 'Note',
-    component: NoteView,
+    path: '/result/add',
+    name: 'ResultAdd',
+    component: ResultAddViewVue,
     meta: { requiresAuth: true },
-    props: true,
   },
   {
-    path: '/editnote/:id',
-    name: 'EditNote',
-    component: EditNoteView,
-    meta: { requiresAuth: true },
-    props: true,
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: PageNotFoundViewVue,
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -59,7 +49,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (store.getters.isAuthenticated) {
       next();
       return;

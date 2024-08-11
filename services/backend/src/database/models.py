@@ -10,13 +10,14 @@ class Users(models.Model):
     modified_at = fields.DatetimeField(auto_now=True)
 
 
-class Notes(models.Model):
+class Results(models.Model):
     id = fields.IntField(pk=True)
-    title = fields.CharField(max_length=225)
-    content = fields.TextField()
-    author = fields.ForeignKeyField("models.Users", related_name="note")
+    patient_name = fields.CharField(max_length=225)
+    result_type = fields.TextField()
+    gen_type = fields.TextField()
+    doctor = fields.ForeignKeyField("models.Users", related_name="result")
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.title}, {self.author_id} on {self.created_at}"
+        return f"{self.result_type}, {self.doctor_id} on {self.created_at}"

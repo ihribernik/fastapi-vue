@@ -1,42 +1,87 @@
 <template>
   <section>
-    <form @submit.prevent="submit">
-      <div class="mb-3">
-        <label for="username" class="form-label">Username:</label>
-        <input type="text" name="username" v-model="form.username" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password:</label>
-        <input type="password" name="password" v-model="form.password" class="form-control" />
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <SnackBar
+      :show="snackbarShow"
+      :color="snackbarColor"
+      :message="snackbarMessage"
+      v-on:update="snackbarShow = $event" />
+
+    <v-card class="elevation-12 w-auto h-auto">
+      <v-toolbar dark color="primary">
+        <v-toolbar-title>Login</v-toolbar-title>
+      </v-toolbar>
+      <v-form @submit.prevent="submit" ref="form">
+        <v-card-text>
+          <v-text-field
+            id="username"
+            prepend-icon="mdi-account"
+            name="username"
+            label="username"
+            type="text"></v-text-field>
+          <v-text-field
+            id="password"
+            prepend-icon="mdi-lock"
+            name="password"
+            label="Password"
+            type="password"></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            :loading="loading"
+            type="submit"
+            block
+            color="primary"
+            variant="elevated"
+            >Login</v-btn
+          >
+        </v-card-actions>
+      </v-form>
+    </v-card>
   </section>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-import { mapActions } from 'vuex';
+<script setup>
+import SnackBar from '@/components/SnackBar.vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { VForm } from 'vuetify/lib/components/index.mjs';
+import { useStore } from 'vuex';
 
-export default defineComponent({
-  name: 'Login',
-  data() {
-    return {
-      form: {
-        username: '',
-        password:'',
-      }
-    };
-  },
-  methods: {
-    ...mapActions(['logIn']),
-    async submit() {
+const loading = ref(false);
+const form = ref(null);
+
+const snackbarMessage = ref('');
+const snackbarShow = ref(false);
+const snackbarColor = ref('success');
+
+const store = useStore();
+const router = useRouter();
+
+const showSnackbar = () => {
+  snackbarShow.value = true;
+};
+
+const submit = async () => {
+  try {
+    const { valid } = await form.value.validate();
+
+    if (valid) {
+      loading.value = true;
       const User = new FormData();
-      User.append('username', this.form.username);
-      User.append('password', this.form.password);
-      await this.logIn(User);
-      this.$router.push('/dashboard');
+      User.append('username', form.value.username.value);
+      User.append('password', form.value.password.value);
+      const response = await store.dispatch('logIn', User);
+      loading.value = false;
+      if (response.success !== true) {
+        throw response.data;
+      }
+      router.push('/');
     }
+  } catch (error) {
+    snackbarMessage.value = error || 'Unknown error';
+    snackbarColor.value = 'error';
+    showSnackbar();
   }
-});
+};
 </script>

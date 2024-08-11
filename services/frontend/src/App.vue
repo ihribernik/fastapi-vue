@@ -1,20 +1,22 @@
 <template>
-  <div id="app">
+  <v-app>
     <NavBar />
-    <div class="main container">
-      <router-view/>
-    </div>
-  </div>
+    <v-main>
+      <v-container>
+        <router-view></router-view>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
 // @ is an alias to /src
-import NavBar from '@/components/NavBar.vue'
+import NavBar from '@/components/NavBar.vue';
 export default {
   components: {
-    NavBar
-  }
-}
+    NavBar,
+  },
+};
 </script>
 
 <style>
